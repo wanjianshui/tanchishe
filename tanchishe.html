@@ -1,0 +1,209 @@
+<!--
+ * @Author: 王建水-ss 11877704+wang-jianshui-ss@user.noreply.gitee.com
+ * @Date: 2022-11-30 15:17:45
+ * @LastEditors: 王建水-ss 11877704+wang-jianshui-ss@user.noreply.gitee.com
+ * @LastEditTime: 2022-12-02 09:12:10
+ * @FilePath: \JavaScript\案例\JS\11 贪吃蛇.html
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>无敌贪吃蛇</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            /* no-repeat不重叠 */
+            background: url(./1.jpg) no-repeat;
+            /* 铺满全屏 */
+            background-size: cover;
+        }
+
+        /* 按钮盒子样式 */
+        .btnbox {
+            display: flex;
+            width: 200px;
+            height: 300px;
+            flex-direction: column;
+            justify-content: space-evenly;
+            /* 每一项居中对齐 */
+            align-items: center;
+            /* 固定定位 */
+            position: fixed;
+            top: 61px;
+            background-color: rgb(113, 113, 216);
+        }
+
+        /* 按钮样式 */
+        .btnbox button {
+            width: 100px;
+            height: 40px;
+            font-size: 23px;
+            background: white;
+            color: black;
+            border-radius: 50%;
+        }
+
+        /* 图片样式 */
+        .map {
+            width: 1000px;
+            height: 600px;
+            background: url(./2.jpg);
+            margin: auto;
+            position: fixed;
+            top: 0px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            /* 图片添加阴影 inset内阴影*/
+            box-shadow: 0px 0px 100px black inset, 0px 0px 30px white;
+        }
+
+        /* 照片里的div */
+        .map>div {
+            width: 20px;
+            height: 20px;
+            position: absolute;
+            /* 圆角 球 */
+            border-radius: 50%;
+            /* 添加阴影 发光 */
+            box-shadow: 0px 0px 10px yellow;
+        }
+
+        /* 头部球的颜色 */
+        div.head {
+            /*颜色渐变 */
+            background: radial-gradient(#ffc000, #ff4e00);
+        }
+
+        /* 身体球的颜色 */
+        div.body {
+            /*颜色渐变 */
+            background: radial-gradient(#fff369, #fa791a);
+        }
+
+        /* 食物球的颜色 */
+        div.foot {
+            /*颜色渐变 */
+            background: radial-gradient(#a7fa64, #4f8524);
+            /* 添加动画 */
+            animation: footAnimate 1s linear infinite;
+            /* 定位 */
+            /* left: 400px;
+            top: 40px; */
+        }
+
+        /* 设置食物球动画 */
+        @keyframes footAnimate {
+            0% {
+                box-shadow: 0px 0px 10px white;
+            }
+
+            50% {
+                box-shadow: 0px 0px 50px white;
+            }
+
+            100% {
+                box-shadow: 0px 0px 100px white;
+            }
+        }
+
+        audio {
+            width: 180px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1px solid pink;
+            box-shadow: 0px 0px 100px black inset, 0px 0px 30px pink;
+            /* 固定定位 */
+            position: fixed;
+            /* 固定到屏幕0% 即最右边 */
+            right: 0%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="btnbox">
+        <button id="start">开始</button>
+        <button id="pause">暂停</button>
+        <button id="restart">重来</button>
+    </div>
+    <div class="map">
+        <!-- <div class="body"></div> -->
+        <!-- <div class="foot"></div> -->
+    </div>
+    <!-- 背景音乐 -->
+    <audio src="./yinyue.mp3" controls loop autoplay></audio>
+    <!-- 引入js文件 -->
+    <script src="./food.js"></script>
+    <script src="./snake.js"></script>
+    <script src="./game.js"></script>
+
+    <script>
+        // 拿到地图
+        // const food = new Food(".map")
+        // const snake = new Snake(".map")
+        const game = new Game(".map")
+        // 拿到按钮
+        const start = document.querySelector("#start")
+        const pause = document.querySelector("#pause")
+        const restart = document.querySelector("#restart")
+        // 点击事件
+        start.onclick = function () {
+            game.start()
+        }
+        pause.onclick = function () {
+            game.pause()
+        }
+        restart.onclick = function () {
+            game.restart()
+        }
+
+        // 键盘监听
+        document.onkeydown = function (e) {
+            switch (e.keyCode) {
+                case 37:
+                    game.change('left')
+                    break;
+                case 38:
+                    game.change('top')
+                    break;
+                case 39:
+                    game.change('right')
+                    break;
+                case 40:
+                    game.change('bottom')
+                    break;
+                // case 13:
+                //     game.start()
+                //     break;
+                // case 32:
+                //     game.pause() 
+                //     break;
+
+                default:
+                    break;
+            }
+
+        }
+
+    </script>
+
+
+
+</body>
+
+</html>
